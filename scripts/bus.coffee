@@ -127,8 +127,15 @@ module.exports = (robot) ->
         for value,index in allDay
             console.log "#{value}:#{url[index]}"
             getBusSchedule("minakusa",value,url[index],robot)
+            sleep(100)
             console.log "#{value}:#{urlKusatsu[index]}"
             getBusSchedule("kusatsu",value,urlKusatsu[index],robot)
+            sleep(100)
+
+#スリープメソッド
+sleep = (ms) ->
+  start = new Date().getTime()
+  continue while new Date().getTime() - start < ms
 
 #時刻表のbodyを取得する関数
 getBusSchedule = (to,day,url,robot) ->
@@ -146,6 +153,7 @@ getBusSchedule = (to,day,url,robot) ->
 #時刻表のbodyからデータを加工し，hubotに記憶させる関数
 brainSchedule = (to,day,body,robot) ->
     $ = cheerio.load(body)
+    console.log "#{to}_#{day} 開始"
     $('tr').each ->
         time = parseInt($(this).children('td').eq(0).find('b').text(),10)
         if time in [5..24]
@@ -155,7 +163,7 @@ brainSchedule = (to,day,body,robot) ->
             key = "#{to}_#{day}_time#{time}"
             robot.brain.data[key] = bm
             robot.brain.save()
-        console.log "#{to}_#{day} 完了"
+    console.log "#{to}_#{day} 完了"
 
 #祝日判定
 isPublicHoliday = (d,robot) ->
