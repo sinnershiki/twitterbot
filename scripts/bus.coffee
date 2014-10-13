@@ -16,6 +16,31 @@ allDayName = ["平日","土曜日","日曜・祝日"]
 url = ["http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=1&eigCd=7&teicd=1050&KaiKbn=NOW&pole=2","http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=2&eigCd=7&teicd=1050&KaiKbn=NOW&pole=2","http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=3&eigCd=7&teicd=1050&KaiKbn=NOW&pole=2"]
 
 module.exports = (robot) ->
+    robot.respond /toKusatsu/i, (msg) ->
+        day = new Date
+        options =
+            url: 'http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=1&eigCd=7&teicd=1050&KaiKbn=NOW&pole=1'
+            timeout: 2000
+            headers: {'user-agent': 'node title fetcher'}
+            encoding: 'binary'
+        request options, (error, response, body) ->
+            conv = new iconv.Iconv('CP932', 'UTF-8//TRANSLIT//IGNORE')
+            body = new Buffer(body, 'binary');
+            body = conv.convert(body).toString();
+            key = "body_toKusatsu_#{day}"
+            $ = cheerio.load(body)
+            $('tr').each ->
+                time = parseInt($(this).children('td').eq(0).find('b').text(),10)
+                if time in [5..24]
+                    a = $(this).children('td').eq(0).find('b').text()
+                    b = $(this).children('td').eq(1).find('a').text()
+                    console.log bm = b.match(/[P|か|笠|西]?\d{2}/g)
+                    key = "toKusatu_#{day}_time#{time}"
+                    #robot.brain.data[key] = bm
+                    #robot.brain.save()
+
+
+
     #毎年1/1の1時に祝日データの更新
     new cron('0 1 1 1 *', () ->
         now = new Date
