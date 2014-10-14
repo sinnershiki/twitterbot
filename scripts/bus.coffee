@@ -119,13 +119,9 @@ module.exports = (robot) ->
         brainPublicHoliday(now.getFullYear(),robot)
         for value,index in allDay
             console.log "#{value}:#{url[index]}"
-<<<<<<< Updated upstream
             getBusSchedule("",value,url[index],robot)
             console.log "#{value}:#{urlKusatsu[index]}"
             getBusSchedule("kusatsu",value,urlKusatsu[index],robot)
-=======
-            getBusSchedule(value,url[index],robot)
->>>>>>> Stashed changes
 
 #時刻表のbodyを取得する関数
 getBusSchedule = (to,day,url,robot) ->
