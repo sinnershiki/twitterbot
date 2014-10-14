@@ -16,6 +16,21 @@ url = ["http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=1&eigCd=7&teicd=105
 urlKusatsu = ["http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=1&eigCd=7&teicd=1050&KaiKbn=NOW&pole=1","http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=2&eigCd=7&teicd=1050&KaiKbn=NOW&pole=1","http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=3&eigCd=7&teicd=1050&KaiKbn=NOW&pole=1"]
 
 module.exports = (robot) ->
+    #毎年1/1の1時に祝日データの更新
+    new cron('0 1 1 1 *', () ->
+        now = new Date
+        year = now.getFullYear()
+        key = "publicHoliday_#{year}"
+        robot.brain.data[key] = []
+        brainPublicHoliday(year,robot)
+    ).start()
+
+    #毎日午前3時に時刻表を取得し，データを更新する(エラー処理などはそのうち追加
+    new cron('0 3 * * *', () ->
+        for value,index in allDay
+            getBusSchedule(value,url[index],robot)
+    ).start()
+
     #次のバスを表示（デフォルトでは10分後）
     robot.respond /bus(.*)/i, (msg) ->
         now = new Date
