@@ -9,53 +9,13 @@ viaP = ["P","パナ東"]
 viaC = ["か","かがやき"]
 viaK = ["笠","笠山"]
 viaN = ["西","パナ西"]
-via = ["shuttle","panahigashi","kagayaki","kasayama","pananishi"]
-viaName = ["直行","パナ東","かがやき","笠山","パナ西"]
+viaKusatsu = ["kusatsu","草津"]
 allDay = ["ordinary","saturday","holiday"]
 allDayName = ["平日","土曜日","日曜・祝日"]
 url = ["http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=1&eigCd=7&teicd=1050&KaiKbn=NOW&pole=2","http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=2&eigCd=7&teicd=1050&KaiKbn=NOW&pole=2","http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=3&eigCd=7&teicd=1050&KaiKbn=NOW&pole=2"]
+urlKusatsu = ["http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=1&eigCd=7&teicd=1050&KaiKbn=NOW&pole=1","http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=2&eigCd=7&teicd=1050&KaiKbn=NOW&pole=1","http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=3&eigCd=7&teicd=1050&KaiKbn=NOW&pole=1"]
 
 module.exports = (robot) ->
-    robot.respond /toKusatsu/i, (msg) ->
-        day = new Date
-        options =
-            url: 'http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=1&eigCd=7&teicd=1050&KaiKbn=NOW&pole=1'
-            timeout: 2000
-            headers: {'user-agent': 'node title fetcher'}
-            encoding: 'binary'
-        request options, (error, response, body) ->
-            conv = new iconv.Iconv('CP932', 'UTF-8//TRANSLIT//IGNORE')
-            body = new Buffer(body, 'binary');
-            body = conv.convert(body).toString();
-            key = "body_toKusatsu_#{day}"
-            $ = cheerio.load(body)
-            $('tr').each ->
-                time = parseInt($(this).children('td').eq(0).find('b').text(),10)
-                if time in [5..24]
-                    a = $(this).children('td').eq(0).find('b').text()
-                    b = $(this).children('td').eq(1).find('a').text()
-                    console.log bm = b.match(/[P|か|笠|西]?\d{2}/g)
-                    key = "toKusatu_#{day}_time#{time}"
-                    #robot.brain.data[key] = bm
-                    #robot.brain.save()
-
-
-
-    #毎年1/1の1時に祝日データの更新
-    new cron('0 1 1 1 *', () ->
-        now = new Date
-        year = now.getFullYear()
-        key = "publicHoliday_#{year}"
-        robot.brain.data[key] = []
-        brainPublicHoliday(year,robot)
-    ).start()
-
-    #毎日午前3時に時刻表を取得し，データを更新する(エラー処理などはそのうち追加
-    new cron('0 3 * * *', () ->
-        for value,index in allDay
-            getBusSchedule(value,url[index],robot)
-    ).start()
-
     #次のバスを表示（デフォルトでは10分後）
     robot.respond /bus(.*)/i, (msg) ->
         now = new Date
@@ -87,6 +47,8 @@ module.exports = (robot) ->
             bus = "笠"
         else if kind in viaN #(kind is via[4]) or (kind is viaName[4])
             bus = "西"
+        else if kind in viaKusatsu
+            to  = "kusatsu"
         #今の時間帯にnextTime（デフォルトでは10）分後から3時間以内にあるバスを
         #5件まで次のバスとして表示する
         afterDate = new Date(now.getTime() + nextTime*60*1000)
@@ -98,16 +60,18 @@ module.exports = (robot) ->
         busHour = hour
         str = "@#{msg.message.user.name} \n"
         flag = 0
-        #msg.send "@#{msg.message.user.name} test"
         loop
             nextBus = []
-            key = "#{allDay[dayIndex]}_time#{busHour}"
             while robot.brain.data[key] is null
                 busHour++
                 if busHour > 24
                     flag = 1
                     break
-                console.log key = "#{allDay[dayIndex]}_time#{busHour}"
+            key = "#{allDay[dayIndex]}_time#{busHour}"
+            #草津行きの場合
+            if to is "kusatsu"
+                  console.log key = "#{to}_#{allDay[dayIndex]}_time#{busHour}"
+
             if flag is 1
                str += "最後のバスです"
                break
@@ -133,42 +97,19 @@ module.exports = (robot) ->
             str += "\n"
         msg.send str
 
-    #指定された曜日（0:平日，1:土曜日，2:日祝）のバスを表示（デフォルトはその日の曜日）
-    robot.respond /show bus schedule(.*)/i, (msg) ->
-        now = new Date
-        dayIndex = 0
-        tmp = parseInt(msg.match[1].match(/\d/))
-        #msg.send isPublicHoliday(now,robot)
-        if tmp in [0..2]
-            dayIndex = tmp
-        else
-            if isPublicHoliday(now,robot) or now.getDay() is 0
-                dayIndex = 2
-            else if now.getDay() is 6
-                dayIndex = 1
-        day = allDay[dayIndex]
-        str = "@{msg.message.user.name} "
-        str += allDayName[dayIndex]
-        for time in [5..24]
-            str += "\n"
-            key = "#{day}_time#{time}"
-            str += time
-            str += "時："
-            str += robot.brain.data[key]
-            #msg.send "#{time}時:#{robot.brain.data[key]}"
-        msg.send str
-
     #コマンドから全てのバスの時刻表を取得
     robot.respond /get data/i, (msg) ->
-        #msg.send "get data now"
+        console.log "get data now"
         now = new Date
         brainPublicHoliday(now.getFullYear(),robot)
         for value,index in allDay
-            #msg.send "#{value}:#{url[index]}"
-            getBusSchedule(value,url[index],robot)
+            console.log "#{value}:#{url[index]}"
+            getBusSchedule("",value,url[index],robot)
+            console.log "#{value}:#{urlKusatsu[index]}"
+            getBusSchedule("kusatsu",value,urlKusatsu[index],robot)
 
 #時刻表のbodyを取得する関数
-getBusSchedule = (day,url,robot) ->
+getBusSchedule = (to,day,url,robot) ->
     options =
         url: url
         timeout: 2000
@@ -178,11 +119,11 @@ getBusSchedule = (day,url,robot) ->
         conv = new iconv.Iconv('CP932', 'UTF-8//TRANSLIT//IGNORE')
         body = new Buffer(body, 'binary');
         body = conv.convert(body).toString();
-        brainSchedule(day,body,robot)
+        brainSchedule(to,day,body,robot)
 
 #時刻表のbodyからデータを加工し，hubotに記憶させる関数
-brainSchedule = (day,body,robot) ->
-    key = "body_#{day}"
+brainSchedule = (to,day,body,robot) ->
+    key = "#{to}_body_#{day}"
     $ = cheerio.load(body)
     $('tr').each ->
         time = parseInt($(this).children('td').eq(0).find('b').text(),10)
@@ -190,7 +131,7 @@ brainSchedule = (day,body,robot) ->
             a = $(this).children('td').eq(0).find('b').text()
             b = $(this).children('td').eq(1).find('a').text()
             bm = b.match(/[P|か|笠|西]?\d{2}/g)
-            key = "#{day}_time#{time}"
+            key = "#{to}_#{day}_time#{time}"
             robot.brain.data[key] = bm
             robot.brain.save()
 
