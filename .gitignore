@@ -15,4 +15,4 @@ rules.coffee
 storage.coffee
 translate.coffee
 youtube.coffee
-*.sh
+*bot.sh
