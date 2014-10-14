@@ -62,7 +62,7 @@ module.exports = (robot) ->
             bus = "笠"
         else if kind in viaN #(kind is via[4]) or (kind is viaName[4])
             bus = "西"
-        else if kind in viaKusatsu
+        else if /^草津*/.test(kind)
             to  = "kusatsu"
         #今の時間帯にnextTime（デフォルトでは10）分後から3時間以内にあるバスを
         #5件まで次のバスとして表示する
