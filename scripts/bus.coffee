@@ -9,7 +9,6 @@ viaP = ["P","パナ東"]
 viaC = ["か","かがやき"]
 viaK = ["笠","笠山"]
 viaN = ["西","パナ西"]
-viaKusatsu = ["kusatsu","草津"]
 allDay = ["ordinary","saturday","holiday"]
 allDayName = ["平日","土曜日","日曜・祝日"]
 url = ["http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=1&eigCd=7&teicd=1050&KaiKbn=NOW&pole=2","http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=2&eigCd=7&teicd=1050&KaiKbn=NOW&pole=2","http://time.khobho.co.jp/ohmi_bus/tim_dsp.asp?projCd=3&eigCd=7&teicd=1050&KaiKbn=NOW&pole=2"]
@@ -52,6 +51,7 @@ module.exports = (robot) ->
         else
             kind = option[1]
         #バスの行き先判定
+        toName = "南草津"
         if kind in viaS #(kind is via[0]) or (kind is viaName[0])
             bus = "直"
         else if kind in viaP #(kind is via[1]) or (kind is viaName[1])
@@ -64,6 +64,7 @@ module.exports = (robot) ->
             bus = "西"
         else if /^草津*/.test(kind)
             to  = "kusatsu"
+            toName = "草津"
         #今の時間帯にnextTime（デフォルトでは10）分後から3時間以内にあるバスを
         #5件まで次のバスとして表示する
         afterDate = new Date(now.getTime() + nextTime*60*1000)
@@ -74,7 +75,9 @@ module.exports = (robot) ->
         count = 0
         busHour = hour
         str = "@#{msg.message.user.name} \n"
+        str += "#{toName}行き \n"
         flag = 0
+
         loop
             nextBus = []
             while robot.brain.data[key] is null
@@ -102,7 +105,6 @@ module.exports = (robot) ->
                     count++
                 if count is 5
                     break
-            #str += "#{busHour}時:#{nextBus}"
             str += busHour
             str += "時："
             str += nextBus.join()
