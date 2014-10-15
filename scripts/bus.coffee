@@ -42,6 +42,7 @@ module.exports = (robot) ->
         nextTime = parseInt(option[0],10)
         bus = ""
         kind = ""
+        to = "minakusa"
         #一つ目の引数が数字でないまたは空の場合
         #10分後以降を検索することを設定し，一つ目の引数からバスの行き先を判定
         if isNaN(nextTime)
@@ -85,11 +86,7 @@ module.exports = (robot) ->
                 if busHour > 24
                     flag = 1
                     break
-            key = "#{allDay[dayIndex]}_time#{busHour}"
-            #草津行きの場合
-            if to is "kusatsu"
-                  console.log key = "#{to}_#{allDay[dayIndex]}_time#{busHour}"
-
+            console.log key = "#{to}_#{allDay[dayIndex]}_time#{busHour}"
             if flag is 1
                str += "最後のバスです"
                break
@@ -121,7 +118,7 @@ module.exports = (robot) ->
         brainPublicHoliday(now.getFullYear(),robot)
         for value,index in allDay
             console.log "#{value}:#{url[index]}"
-            getBusSchedule("",value,url[index],robot)
+            getBusSchedule("minakusa",value,url[index],robot)
             console.log "#{value}:#{urlKusatsu[index]}"
             getBusSchedule("kusatsu",value,urlKusatsu[index],robot)
 
