@@ -79,13 +79,15 @@ module.exports = (robot) ->
         str += "#{toName}行き \n"
         flag = 0
 
+        key = "#{to}_#{allDay[dayIndex]}_time#{busHour}"
+        while robot.brain.data[key] is null
+            busHour++
+            if busHour > 24
+            flag = 1
+            break
+
         loop
             nextBus = []
-            while robot.brain.data[key] is null
-                busHour++
-                if busHour > 24
-                    flag = 1
-                    break
             console.log key = "#{to}_#{allDay[dayIndex]}_time#{busHour}"
             if flag is 1
                str += "最後のバスです"
