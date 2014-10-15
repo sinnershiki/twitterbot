@@ -83,8 +83,8 @@ module.exports = (robot) ->
         while robot.brain.data[key] is null
             busHour++
             if busHour > 24
-            flag = 1
-            break
+                flag = 1
+                break
 
         loop
             nextBus = []
