@@ -30,6 +30,12 @@ module.exports = (robot) ->
             getBusSchedule(value,url[index],robot)
     ).start()
 
+    robot.respond /public holiday/i, (msg) ->
+        d = new Date
+        key = "publicHoliday_#{d.getFullYear()}"
+        console.log robot.brain.data[key]
+
+
     #次のバスを表示（デフォルトでは10分後）
     robot.respond /bus(.*)/i, (msg) ->
         now = new Date
@@ -166,6 +172,8 @@ isPublicHoliday = (d,robot) ->
 
 #祝日を記憶させる
 brainPublicHoliday = (year,robot) ->
+    key = "publicHoliday_#{year}"
+    robot.brain.data[key] = []
     brainNewYearsDay(year,robot)
     #msg.send "元日"
     brainComingOfAgeDay(year,robot)
