@@ -127,10 +127,10 @@ module.exports = (robot) ->
         for value,index in allDay
             console.log "#{value}:#{url[index]}"
             getBusSchedule("minakusa",value,url[index],robot)
-            sleep(100)
+            #sleep(10000)
             console.log "#{value}:#{urlKusatsu[index]}"
             getBusSchedule("kusatsu",value,urlKusatsu[index],robot)
-            sleep(100)
+            #sleep(10000)
 
 #スリープメソッド
 sleep = (ms) ->
@@ -141,7 +141,7 @@ sleep = (ms) ->
 getBusSchedule = (to,day,url,robot) ->
     options =
         url: url
-        timeout: 2000
+        timeout: 10000
         headers: {'user-agent': 'node title fetcher'}
         encoding: 'binary'
     request options, (error, response, body) ->
