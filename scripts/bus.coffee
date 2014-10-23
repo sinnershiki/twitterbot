@@ -77,7 +77,7 @@ module.exports = (robot) ->
         afterDate = new Date(now.getTime() + nextTime*60*1000)
         hour = afterDate.getHours()
         min = afterDate.getMinutes()
-        if hour in [1..4]
+        if hour in [0..4]
             hour = 5
         count = 0
         busHour = hour
@@ -96,6 +96,7 @@ module.exports = (robot) ->
             nextBus = []
             console.log key = "#{to}_#{allDay[dayIndex]}_time#{busHour}"
             if flag is 1
+               console.log "last bus"
                str += "最後のバスです"
                break
             for value, index in robot.brain.data[key]
@@ -127,15 +128,8 @@ module.exports = (robot) ->
         for value,index in allDay
             console.log "#{value}:#{url[index]}"
             getBusSchedule("minakusa",value,url[index],robot)
-            #sleep(10000)
             console.log "#{value}:#{urlKusatsu[index]}"
             getBusSchedule("kusatsu",value,urlKusatsu[index],robot)
-            #sleep(10000)
-
-#スリープメソッド
-sleep = (ms) ->
-  start = new Date().getTime()
-  continue while new Date().getTime() - start < ms
 
 #時刻表のbodyを取得する関数
 getBusSchedule = (to,day,url,robot) ->
