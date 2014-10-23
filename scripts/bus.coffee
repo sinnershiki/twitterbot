@@ -145,7 +145,6 @@ getBusSchedule = (to,day,url,robot) ->
 
 #時刻表のbodyからデータを加工し，hubotに記憶させる関数
 brainSchedule = (to,day,body,robot) ->
-    key = "#{to}_body_#{day}"
     $ = cheerio.load(body)
     $('tr').each ->
         time = parseInt($(this).children('td').eq(0).find('b').text(),10)
@@ -156,6 +155,7 @@ brainSchedule = (to,day,body,robot) ->
             key = "#{to}_#{day}_time#{time}"
             robot.brain.data[key] = bm
             robot.brain.save()
+        console.log "#{to}_#{day} 完了"
 
 #祝日判定
 isPublicHoliday = (d,robot) ->
