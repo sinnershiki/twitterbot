@@ -134,7 +134,7 @@ module.exports = (robot) ->
 getBusSchedule = (to,day,url,robot) ->
     options =
         url: url
-        timeout: 10000
+        timeout: 50000
         headers: {'user-agent': 'node title fetcher'}
         encoding: 'binary'
     request options, (error, response, body) ->
