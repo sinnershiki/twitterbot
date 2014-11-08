@@ -24,10 +24,11 @@ module.exports = (robot) ->
         brainPublicHoliday(year,robot)
     ).start()
 
-    #毎日午前3時に時刻表を取得し，データを更新する(エラー処理などはそのうち追加
+    #毎日午前3時にその曜日の時刻表を取得し，データを更新する(エラー処理などはそのうち追加
     new cron('0 3 * * *', () ->
-        for value,index in allDay
-            getBusSchedule(value,url[index],robot)
+        now = new Date
+        dayIndex = getDayOfWeek(now,robot)
+        getBusSchedule(allDay[dayIndex],url[dayIndex],robot)
     ).start()
 
     robot.respond /public holiday/i, (msg) ->
@@ -35,15 +36,10 @@ module.exports = (robot) ->
         key = "publicHoliday_#{d.getFullYear()}"
         console.log robot.brain.data[key]
 
-
     #次のバスを表示（デフォルトでは10分後）
     robot.respond /bus(.*)/i, (msg) ->
         now = new Date
-        dayIndex = 0
-        if isPublicHoliday(now,robot) or now.getDay() is 0
-            dayIndex = 2
-        else if now.getDay() is 6
-            dayIndex = 1
+        dayIndex = getDayOfWeek(now,robot)
         option = msg.match[1].replace(/^\s+/,"").split(/\s/)
         nextTime = parseInt(option[0],10)
         bus = ""
@@ -130,7 +126,16 @@ module.exports = (robot) ->
             console.log "#{value}:#{urlKusatsu[index]}"
             getBusSchedule("kusatsu",value,urlKusatsu[index],robot)
 
-#時刻表のbodyを取得する関数
+#曜日の要素取得
+getDayOfWeek = (now,robot) ->
+    dayIndex = 0
+        if isPublicHoliday(now,robot) or now.getDay() is 0
+            dayIndex = 2
+        else if now.getDay() is 6
+            dayIndex = 1
+    return dayIndex
+
+#時刻表のbodyを取得する
 getBusSchedule = (to,day,url,robot) ->
     options =
         url: url
@@ -143,7 +148,7 @@ getBusSchedule = (to,day,url,robot) ->
         body = conv.convert(body).toString();
         brainSchedule(to,day,body,robot)
 
-#時刻表のbodyからデータを加工し，hubotに記憶させる関数
+#時刻表のbodyからデータを加工し，hubotに記憶させる
 brainSchedule = (to,day,body,robot) ->
     $ = cheerio.load(body)
     console.log "#{to}_#{day} 開始"
