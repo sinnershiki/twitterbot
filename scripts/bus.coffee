@@ -172,7 +172,7 @@ isPublicHoliday = (d,robot) ->
         x = x.split(/-/)
         month = parseInt(x[1])
         date =  parseInt(x[2])
-        if month is d.getMonth() and date is d.getDate()
+        if month-1 is d.getMonth() and date is d.getDate()
             return true
     return false
 
