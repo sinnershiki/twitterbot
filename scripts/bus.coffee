@@ -129,10 +129,10 @@ module.exports = (robot) ->
 #曜日の要素取得
 getDayOfWeek = (now,robot) ->
     dayIndex = 0
-        if isPublicHoliday(now,robot) or now.getDay() is 0
-            dayIndex = 2
-        else if now.getDay() is 6
-            dayIndex = 1
+    if isPublicHoliday(now,robot) or now.getDay() is 0
+        dayIndex = 2
+    else if now.getDay() is 6
+        dayIndex = 1
     return dayIndex
 
 #時刻表のbodyを取得する
@@ -172,7 +172,7 @@ isPublicHoliday = (d,robot) ->
         x = x.split(/-/)
         month = parseInt(x[1])
         date =  parseInt(x[2])
-        if month-1 is d.getMonth() and date is d.getDate()
+        if (month-1) is d.getMonth() and date is d.getDate()
             return true
     return false
 
