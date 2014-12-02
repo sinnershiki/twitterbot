@@ -1,3 +1,10 @@
+# Description:
+#   近江鉄道バスfrom立命館to南草津(or草津)の時刻表通知
+#
+# Commands:
+#   hubot bus <n分後> <シャトル|P|かがやき|笠山|パナ西|草津> - 経由地
+#
+
 Buffer = require('buffer').Buffer
 cron = require('cron').CronJob
 request = require('request')
@@ -31,10 +38,10 @@ module.exports = (robot) ->
         getBusSchedule(allDay[dayIndex],url[dayIndex],robot)
     ).start()
 
-    robot.respond /public holiday/i, (msg) ->
-        d = new Date
-        key = "publicHoliday_#{d.getFullYear()}"
-        console.log robot.brain.data[key]
+    #robot.respond /public holiday/i, (msg) ->
+    #    d = new Date
+    #    key = "publicHoliday_#{d.getFullYear()}"
+    #    console.log robot.brain.data[key]
 
     #次のバスを表示（デフォルトでは10分後）
     robot.respond /bus(.*)/i, (msg) ->
