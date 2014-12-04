@@ -4,7 +4,7 @@ request = require('request')
 cheerio = require('cheerio')
 iconv = require('iconv')
 
-viaS = ["直","shuttle","シャトル","直行"]
+viaS = ["S","直","shuttle","シャトル","直行"]
 viaP = ["P","パナ東"]
 viaC = ["か","かがやき"]
 viaK = ["笠","笠山"]
