@@ -4,7 +4,7 @@ request = require('request')
 cheerio = require('cheerio')
 iconv = require('iconv')
 
-viaS = ["S","直","shuttle","シャトル","直行"]
+viaS = ["直","shuttle","シャトル","直行","S"]
 viaP = ["P","パナ東"]
 viaC = ["か","かがやき"]
 viaK = ["笠","笠山"]
@@ -96,6 +96,7 @@ module.exports = (robot) ->
                break
             for value, index in robot.brain.data[key]
                 tmpTime = parseInt(value.match(/\d{2}/))
+                #シャトルバスの場合の判定
                 if not tmpBus = value.match(/\D/)
                     tmpBus = viaS[0]
                 if busHour > hour and ///#{bus}///.test(tmpBus)
