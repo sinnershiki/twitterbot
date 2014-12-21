@@ -44,7 +44,7 @@ module.exports = (robot) ->
     #    console.log robot.brain.data[key]
 
     #次のバスを表示（デフォルトでは10分後）
-    robot.respond /bus(.*)/i, (msg) ->
+    robot.respond /(bus|🚌)(.*)/i, (msg) ->
         now = new Date
         dayIndex = getDayOfWeek(now,robot)
         option = msg.match[1].replace(/^\s+/,"").split(/\s/)
