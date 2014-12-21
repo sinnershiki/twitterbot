@@ -84,7 +84,8 @@ module.exports = (robot) ->
             hour = 5
         count = 0
         busHour = hour
-        str = "@#{msg.message.user.name} \n"
+        #str = "@#{msg.message.user.name} \n"
+        str = ""
         str += "#{toName}行き \n"
         flag = 0
 
@@ -121,7 +122,7 @@ module.exports = (robot) ->
                 break
             busHour++
             str += "\n"
-        msg.send str
+        msg.reply str
 
     #コマンドから全てのバスの時刻表を取得
     robot.respond /get data/i, (msg) ->
