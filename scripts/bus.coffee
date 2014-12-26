@@ -85,7 +85,7 @@ module.exports = (robot) ->
         count = 0
         busHour = hour
         #str = "@#{msg.message.user.name} \n"
-        str = ""
+        str = "\n"
         str += "#{toName}行き \n"
         flag = 0
 
