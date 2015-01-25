@@ -34,8 +34,9 @@ module.exports = (robot) ->
     #毎日午前3時にその曜日の時刻表を取得し，データを更新する(エラー処理などはそのうち追加
     new cron('0 3 * * *', () ->
         now = new Date
-        dayIndex = getDayOfWeek(now,robot)
-        getBusSchedule(allDay[dayIndex],url[dayIndex],robot)
+        console.log "午前3時:#{now}"
+        #dayIndex = getDayOfWeek(now,robot)
+        #getBusSchedule(allDay[dayIndex],url[dayIndex],robot)
     ).start()
 
     #robot.respond /public holiday/i, (msg) ->
