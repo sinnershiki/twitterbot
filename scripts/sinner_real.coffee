@@ -1,16 +1,17 @@
+Twit = require 'twit'
+client = new Twit({
+    consumer_key: process.env.HUBOT_TWITTER_KEY
+    consumer_secret: process.env.HUBOT_TWITTER_SECRET
+    access_token: process.env.HUBOT_TWITTER_TOKEN
+    access_token_secret: process.env.HUBOT_TWITTER_TOKEN_SECRET
+})
+
 module.exports = (robot) ->
-    robot.respond /test(.*)/i, (msg) ->
-        console.log msg.message.user.name
-        console.log msg.message.data
-
-    #許さん
     robot.hear /(.*)しんなー(.*)/i, (msg) ->
-        console.log msg.message.user.name
+        client.post 'favorites/create', {id: msg.message.id}, (err, data, response) =>
+            console.log err if err?
 
-    #デブ
-    robot.respond /nibo(.*)/i, (msg) ->
-        console.log msg.message.user.name
-
-    #許さん
     robot.respond /進捗どうですか(.*)/i, (msg) ->
-        console.log msg.message.user.name
+        client.post 'favorites/create', {id: msg.message.id}, (err, data, response) =>
+            console.log err if err?
+        msg.reply "進捗ダメです https://twitter.com/sinner_real/status/574034954046177280/photo/1"
