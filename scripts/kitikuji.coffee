@@ -4,10 +4,13 @@
 # Commands:
 #   kitikuji + ユーザ名で煽りを1/2の確率で吐く
 #   特定のユーザが使うと、問答無用で煽りを1/2で吐く。多分。
-#   kitikuji だけで使えなくなったのはどう考えてもcoffee scriptが悪い
 
 module.exports = (robot) ->
+<<<<<<< HEAD:scripts/kitikuji.coffee
     robot.respond /kitikuji/i, (msg) ->
+=======
+    robot.respond /kitikuji(.*)/i, (msg) ->
+>>>>>>> 67927b68aeb8e091b9f4192085cc3ccd69457b07:scripts/kitikuji
 
         name = msg.match[1]
         omikuji = ["大kiti","中kiti","kiti","末kiti","凶","大凶"]
@@ -21,9 +24,15 @@ module.exports = (robot) ->
             'umr00' : '10月'
         }
 
+<<<<<<< HEAD:scripts/kitikuji.coffee
 	console.log flag = Math.floor( Math.random() * 2 )
 	if flag
+=======
+        if Math.round(Math.random())
+>>>>>>> 67927b68aeb8e091b9f4192085cc3ccd69457b07:scripts/kitikuji
             result = results[msg.message.user.name]
+            
+        if !(result)
             result = results[name]
 
         if !(result)
