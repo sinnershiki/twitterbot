@@ -21,7 +21,7 @@ module.exports = (robot) ->
             'umr00' : '10月'
         }
 
-        if flag = Math.round(Math.random())
+        if flag = Math.floor(Math.random()*2)
             result = results[msg.message.user.name]
             result = results[name]
 
