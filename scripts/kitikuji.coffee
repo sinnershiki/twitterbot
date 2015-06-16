@@ -19,7 +19,6 @@ module.exports = (robot) ->
             'Akashi_K' : '大吉'
             'gitchaaan' : 'お祈り'
             'umr00' : '10月'
-            '_1t_':'留年'
         }
 
         if flag = Math.round(Math.random())
@@ -30,4 +29,3 @@ module.exports = (robot) ->
             console.log result = omikuji[Math.floor(Math.random() * 6)]
 
         msg.reply "#{result}です．"
-
