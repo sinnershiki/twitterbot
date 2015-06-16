@@ -28,7 +28,8 @@
     "hubot-scripts": ">= 2.5.0 < 3.0.0",
     "hubot-twitter-userstream": "0.0.3",
     "iconv": "^2.1.4",
-    "request": "^2.39.0"
+    "request": "^2.39.0",
+    "twit": "^1.1.20"
   },
   "engines": {
     "node": ">= 0.8.x",
