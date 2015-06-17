@@ -12,7 +12,7 @@ module.exports = (robot) ->
 
         results = {
             'KHryuzen' : 'ハゲ'
-            'sinner_rits' : '進捗どうですか'
+            'sinner_real' : '進捗どうですか'
             'sa_son_' : 'ゴーレム（レア！）'
             'Akashi_K' : '鹿お断り'
             'gitchaaan' : 'お祈り'
@@ -24,7 +24,7 @@ module.exports = (robot) ->
 
         if Math.round(Math.random())
             result = results[msg.message.user.name]
-            
+
         if !(result)
             result = results[name]
 
