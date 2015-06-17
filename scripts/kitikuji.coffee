@@ -17,6 +17,8 @@ module.exports = (robot) ->
             'Akashi_K' : '鹿お断り'
             'gitchaaan' : 'お祈り'
             'umr00' : '10月'
+	    'urarin' : '面白いこと言って'
+	    '_1t_' : '早くイカ買って'
         }
 
 
