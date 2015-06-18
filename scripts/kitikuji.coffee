@@ -19,6 +19,8 @@ module.exports = (robot) ->
             'umr00' : '10月'
             'urarin' : '面白いこと言って'
             '_1t_' : '早くイカ買って'
+            'bn_naoyuki' : 'お前を子持ちにしてやろうか'
+            'natural_pama' : '天( ᐛ👐) パァ'
         }
 
 
