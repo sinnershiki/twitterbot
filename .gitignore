@@ -15,4 +15,5 @@ rules.coffee
 storage.coffee
 translate.coffee
 youtube.coffee
-*bot.sh
+*.sh
+*.log

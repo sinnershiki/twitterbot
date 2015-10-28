@@ -25,6 +25,7 @@
     "cron": "^1.0.4",
     "eastasianwidth": "^0.1.0",
     "hubot": ">= 2.6.0 < 3.0.0",
+    "hubot-ritsbus": "0.0.2",
     "hubot-scripts": ">= 2.5.0 < 3.0.0",
     "hubot-twitter-userstream": "0.0.3",
     "iconv": "^2.1.4",
