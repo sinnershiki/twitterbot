@@ -17,3 +17,4 @@ translate.coffee
 youtube.coffee
 *.sh
 *.log
+*.rdb
