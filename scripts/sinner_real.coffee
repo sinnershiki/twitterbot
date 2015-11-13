@@ -3,8 +3,7 @@
 #
 # Commands:
 #   進捗どうですか - 進捗ダメですリプライが返る
-
-
+#
 Twit = require 'twit'
 client = new Twit({
   consumer_key: process.env.HUBOT_TWITTER_KEY
@@ -22,3 +21,6 @@ module.exports = (robot) ->
     client.post 'favorites/create', {id: msg.message.id}, (err, data, response) =>
       console.log err if err?
     msg.reply "進捗ダメです https://twitter.com/sinner_real/status/574034954046177280/photo/1"
+
+  robot.respond /^(おそ|カラ|チョロ|一|十四|トド)$/i, (msg) ->
+    msg.reply "松"
