@@ -5,12 +5,12 @@
 #   進捗どうですか - 進捗ダメですリプライが返る
 #
 Twit = require 'twit'
-# client = new Twit({
-#   consumer_key: process.env.HUBOT_TWITTER_KEY
-#   consumer_secret: process.env.HUBOT_TWITTER_SECRET
-#   access_token: process.env.HUBOT_TWITTER_TOKEN
-#   access_token_secret: process.env.HUBOT_TWITTER_TOKEN_SECRET
-# })
+client = new Twit({
+  consumer_key: process.env.HUBOT_TWITTER_KEY
+  consumer_secret: process.env.HUBOT_TWITTER_SECRET
+  access_token: process.env.HUBOT_TWITTER_TOKEN
+  access_token_secret: process.env.HUBOT_TWITTER_TOKEN_SECRET
+})
 
 module.exports = (robot) ->
   robot.respond /りゅーほー(.*)/i, (msg) ->
