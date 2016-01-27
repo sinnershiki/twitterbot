@@ -15,7 +15,8 @@ client = new Twit({
 module.exports = (robot) ->
   robot.respond /ただいま(.*)/i, (msg) ->
     wbMsgList = ["おかえり", "おかえりなさい", "お仕事お疲れ様でした", "はよ寝ろ", "え！？もう帰ってきたの！？"]
-    specificUser = JSON.parse(fs.readFileSync('./config/welcomBack/specificUser.json', 'utf8'));
+    #TODO: そのうちユーザごとにもメッセージ追加する
+    #specificUser = JSON.parse(fs.readFileSync('./config/welcomBack/specificUser.json', 'utf8'));
 
     welcomeBackMsg = wbMsgList[Math.floor(Math.random() * wbMsgList.length)]
     msg.reply welcomeBackMsg
